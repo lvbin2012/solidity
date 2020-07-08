@@ -157,6 +157,8 @@ static string const g_strOutputDir = "output-dir";
 static string const g_strOverwrite = "overwrite";
 static string const g_strRevertStrings = "revert-strings";
 static string const g_strStorageLayout = "storage-layout";
+static string const g_strStopAfter = "stop-after";
+static string const g_strParsing = "parsing";
 
 /// Possible arguments to for --revert-strings
 static set<string> const g_revertStringsArgs
@@ -798,6 +800,11 @@ General Information)").c_str(),
 			po::value<string>()->value_name(boost::join(g_revertStringsArgs, ",")),
 			"Strip revert (and require) reason strings or add additional debugging information."
 		)
+		(
+			g_strStopAfter.c_str(),
+			po::value<string>()->value_name("stage"),
+			"Stop execution after the given compiler stage. Valid options: \"parsing\"."
+		)
 	;
 	desc.add(outputOptions);
 
@@ -1132,6 +1139,17 @@ bool CommandLineInterface::processInput()
 		}
 	}
 
+	if (m_args.count(g_strStopAfter))
+	{
+		if (m_args[g_strStopAfter].as<string>() != "parsing")
+		{
+			serr() << "Valid options for --" << g_strStopAfter << " are: \"parsing\".\n";
+			return false;
+		}
+		else
+			m_stopAfter = CompilerStack::State::Parsed;
+	}
+
 	vector<string> const exclusiveModes = {
 		g_argStandardJSON,
 		g_argLink,
@@ -1411,7 +1429,7 @@ bool CommandLineInterface::processInput()
 				m_compiler->setParserErrorRecovery(true);
 		}
 
-		bool successful = m_compiler->compile();
+		bool successful = m_compiler->compile(m_stopAfter);
 
 		for (auto const& error: m_compiler->errors())
 		{
@@ -1860,7 +1878,10 @@ void CommandLineInterface::outputCompilationResults()
 	handleAst(g_argAstJson);
 	handleAst(g_argAstCompactJson);
 
-	if (!m_compiler->compilationSuccessful())
+	if (
+		!m_compiler->compilationSuccessful() &&
+		m_stopAfter == CompilerStack::State::CompilationSuccessful
+	)
 	{
 		serr() << endl << "Compilation halted after AST generation due to errors." << endl;
 		return;

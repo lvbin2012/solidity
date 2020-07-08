@@ -1,3 +1,8 @@
+### 0.6.13 (unreleased)
+
+Compiler Features:
+ * New feature to stop compilation after parsing stage.
+
 ### 0.6.12 (2020-07-22)
 
 Language Features:
