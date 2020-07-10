@@ -1,3 +1,9 @@
+### 0.7.0 (unreleased)
+
+Compiler Features:
+ * SMTChecker: Generate multi-transaction couterexamples for violated assertions and empty pops.
+
+
 ### 0.6.12 (2020-07-22)
 
 Language Features:
