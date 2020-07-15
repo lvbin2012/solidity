@@ -1,3 +1,9 @@
+### 0.7.0 (unreleased)
+
+Compiler Features:
+ * SMTChecker: Fix internal error when assigning to a 1-tuple.
+
+
 ### 0.6.12 (2020-07-22)
 
 Language Features:
