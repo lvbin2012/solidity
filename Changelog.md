@@ -16,6 +16,7 @@ Bugfixes:
  * SMTChecker: Fix internal error in sequential storage array pushes (``push().push()`).
  * Type Checker: Fix overload resolution in combination with ``{value: ...}``.
  * Type Checker: Fix internal compiler error related to oversized types.
+ * Type Checker: Fixing type deduction issues on function types.
  * Code Generator: Avoid double cleanup when copying to memory.
 
 Compiler Features:
