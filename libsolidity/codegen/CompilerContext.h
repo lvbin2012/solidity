@@ -376,7 +376,7 @@ private:
 	std::map<Declaration const*, std::vector<unsigned>> m_localVariables;
 	/// The contract currently being compiled. Virtual function lookup starts from this contarct.
 	ContractDefinition const* m_mostDerivedContract = nullptr;
-	/// Whether or not to use checked arithmatics.
+	/// Whether to use checked arithmetics.
 	bool m_checkedArithmetics = true;
 	/// Stack of current visited AST nodes, used for location attachment
 	std::stack<ASTNode const*> m_visitedNodes;
