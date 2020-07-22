@@ -148,6 +148,7 @@ namespace solidity::langutil
 	K(As, "as", 0)                                                     \
 	K(Assembly, "assembly", 0)                                         \
 	K(Break, "break", 0)                                               \
+	K(Catch, "catch", 0)                                               \
 	K(Constant, "constant", 0)                                         \
 	K(Constructor, "constructor", 0)                                   \
 	K(Continue, "continue", 0)                                         \
@@ -187,6 +188,7 @@ namespace solidity::langutil
 	K(CallData, "calldata", 0)                                         \
 	K(Struct, "struct", 0)                                             \
 	K(Throw, "throw", 0)                                               \
+	K(Try, "try", 0)                                                   \
 	K(Type, "type", 0)                                                 \
 	K(Using, "using", 0)                                               \
 	K(Var, "var", 0)                                                   \
@@ -215,12 +217,12 @@ namespace solidity::langutil
 	K(Bool, "bool", 0)                                                 \
 	K(Fixed, "fixed", 0)                                               \
 	K(UFixed, "ufixed", 0)                                             \
-	T(IntM, "intM", 0)                                                 \
-	T(UIntM, "uintM", 0)                                               \
-	T(BytesM, "bytesM", 0)                                             \
-	T(FixedMxN, "fixedMxN", 0)                                         \
-	T(UFixedMxN, "ufixedMxN", 0)                                       \
-	T(TypesEnd, nullptr, 0) /* used as type enum end marker */         \
+	K(IntM, "intM", 0)                                                 \
+	K(UIntM, "uintM", 0)                                               \
+	K(BytesM, "bytesM", 0)                                             \
+	K(FixedMxN, "fixedMxN", 0)                                         \
+	K(UFixedMxN, "ufixedMxN", 0)                                       \
+	K(TypesEnd, nullptr, 0) /* used as type enum end marker */         \
 	\
 	/* Literals */                                                     \
 	K(TrueLiteral, "true", 0)                                          \
@@ -232,7 +234,7 @@ namespace solidity::langutil
 	\
 	/* Identifiers (not keywords or future reserved words). */         \
 	T(Identifier, nullptr, 0)                                          \
-	T(SubGwei, "gwei", 0)                                              \
+	K(SubGwei, "gwei", 0)                                              \
 	\
 	/* Keywords reserved for future use. */                            \
 	K(After, "after", 0)                                               \
@@ -240,7 +242,6 @@ namespace solidity::langutil
 	K(Apply, "apply", 0)                                               \
 	K(Auto, "auto", 0)                                                 \
 	K(Case, "case", 0)                                                 \
-	K(Catch, "catch", 0)                                               \
 	K(CopyOf, "copyof", 0)                                             \
 	K(Default, "default", 0)                                           \
 	K(Define, "define", 0)                                             \
@@ -263,7 +264,6 @@ namespace solidity::langutil
 	K(Static, "static", 0)                                             \
 	K(Supports, "supports", 0)                                         \
 	K(Switch, "switch", 0)                                             \
-	K(Try, "try", 0)                                                   \
 	K(Typedef, "typedef", 0)                                           \
 	K(TypeOf, "typeof", 0)                                             \
 	K(Unchecked, "unchecked", 0)                                       \
