@@ -1338,7 +1338,8 @@ public:
 		bool _unchecked,
 		std::vector<ASTPointer<Statement>> _statements
 	):
-		Statement(_id, _location, _docString), m_statements(std::move(_statements)),
+		Statement(_id, _location, _docString), 
+		m_statements(std::move(_statements)),
 		m_unchecked(_unchecked)
 	{}
 	void accept(ASTVisitor& _visitor) override;
