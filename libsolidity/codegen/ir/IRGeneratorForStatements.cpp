@@ -2394,6 +2394,9 @@ string IRGeneratorForStatements::binaryOperation(
 			case Token::Mod:
 				fun = m_utils.checkedIntModFunction(*type);
 				break;
+			case Token::Exp:
+				fun = m_utils.overflowCheckedIntExpFunction(*type, *type);
+				break;
 			case Token::BitOr:
 				fun = "or";
 				break;

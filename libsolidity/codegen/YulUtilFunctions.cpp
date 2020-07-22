@@ -603,6 +603,53 @@ string YulUtilFunctions::overflowCheckedIntSubFunction(IntegerType const& _type)
 	});
 }
 
+string YulUtilFunctions::overflowCheckedIntExpFunction(
+	IntegerType const& _type,
+	IntegerType const& _exponentType
+)
+{
+	solUnimplementedAssert(!_type.isSigned(), "");
+	solAssert(!_exponentType.isSigned(), "");
+	string functionName = "checked_exp_" + _type.identifier();
+	return m_functionCollector.createFunction(functionName, [&]() {
+		return
+			Whiskers(R"(
+			function <functionName>(base, exponent) -> power {
+				base := <cleanupFunction>(base)
+				exponent := <exponentCleanupFunction>(exponent)
+				// 0**0 == 1
+				if iszero(exponent) { power := 1 leave }
+				if or(
+					lt(base, 2),
+					eq(exponent, 1)
+				) { power := base leave }
+
+				power := 1
+				let max := <maxValue>
+
+				for { } gt(exponent, 1) {} {
+					// overflow check for base * base
+					if gt(base, div(max, base)) { revert(0, 0) }
+					if and(exponent, 1) {
+						// no check needed here because base >= power
+						power := mul(power, base)
+					}
+					base := mul(base, base)
+					exponent := <shr_1>(exponent)
+				}
+				if gt(power, div(max, base)) { revert(0, 0) }
+				power := mul(power, base)
+			}
+			)")
+			("functionName", functionName)
+			("maxValue", toCompactHexWithPrefix(u256(_type.maxValue())))
+			("cleanupFunction", cleanupFunction(_type))
+			("exponentCleanupFunction", cleanupFunction(_exponentType))
+			("shr_1", shiftRightFunction(1))
+			.render();
+	});
+}
+
 string YulUtilFunctions::extractByteArrayLengthFunction()
 {
 	string functionName = "extract_byte_array_length";
