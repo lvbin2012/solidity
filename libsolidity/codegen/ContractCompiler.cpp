@@ -1332,6 +1332,10 @@ void ContractCompiler::appendModifierOrFunctionCode()
 
 	if (codeBlock)
 	{
+		bool previousChecked = m_context.checkedArithmetics();
+		// TODO test that checks are also applied for initializing state variables
+		m_context.setCheckedArithmetics(true);
+
 		m_returnTags.emplace_back(m_context.newTag(), m_context.stackHeight());
 		codeBlock->accept(*this);
 
@@ -1342,6 +1346,8 @@ void ContractCompiler::appendModifierOrFunctionCode()
 		CompilerUtils(m_context).popStackSlots(stackSurplus);
 		for (auto var: addedVariables)
 			m_context.removeVariable(*var);
+
+		m_context.setCheckedArithmetics(previousChecked);
 	}
 	m_modifierDepth--;
 	m_context.setModifierDepth(m_modifierDepth);
