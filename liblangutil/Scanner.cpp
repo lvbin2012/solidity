@@ -53,6 +53,7 @@
 #include <liblangutil/Common.h>
 #include <liblangutil/Exceptions.h>
 #include <liblangutil/Scanner.h>
+#include <libdevcore/Base58.h>
 
 #include <algorithm>
 #include <optional>
@@ -919,5 +920,11 @@ tuple<Token, unsigned, unsigned> Scanner::scanIdentifierOrKeyword()
 	while (isIdentifierPart(m_char) || (m_char == '.' && m_supportPeriodInIdentifier))
 		addLiteralCharAndAdvance();
 	literal.complete();
+    if (m_nextToken.literal[0] == 'E' && m_nextToken.literal.length() == 34){
+		    std::vector<unsigned char> vchRet(21);
+            if (dev::decodeBase58Check(m_nextToken.literal, vchRet)){
+                 return make_tuple(Token::EvryAddressString, 0, 0);
+                }
+	    }
 	return TokenTraits::fromIdentifierOrKeyword(m_nextToken.literal);
 }

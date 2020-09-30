@@ -26,6 +26,7 @@
 #include <libsolidity/ast/AST_accept.h>
 #include <libsolidity/ast/TypeProvider.h>
 #include <libdevcore/Keccak256.h>
+#include <libdevcore/Base58.h>
 
 #include <boost/algorithm/string.hpp>
 #include <algorithm>
@@ -673,19 +674,17 @@ bool Literal::isHexNumber() const
 
 bool Literal::looksLikeAddress() const
 {
-	if (subDenomination() != SubDenomination::None)
-		return false;
+    if (subDenomination() != SubDenomination::None)
+        return false;
 
-	if (!isHexNumber())
-		return false;
-
-	return abs(int(valueWithoutUnderscores().length()) - 42) <= 1;
+    std::vector<unsigned char> vchRet(21);
+    return dev::decodeBase58Check(value(), vchRet);
 }
 
 bool Literal::passesAddressChecksum() const
 {
-	solAssert(isHexNumber(), "Expected hex number");
-	return dev::passesAddressChecksum(valueWithoutUnderscores(), true);
+    std::vector<unsigned char> vchRet(21);
+    return dev::decodeBase58Check(value(), vchRet);
 }
 
 string Literal::getChecksummedAddress() const
