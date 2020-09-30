@@ -220,6 +220,7 @@ namespace langutil
 	K(TrueLiteral, "true", 0)                                          \
 	K(FalseLiteral, "false", 0)                                        \
 	T(Number, nullptr, 0)                                              \
+	T(EvryAddressString, nullptr, 0)                                   \
 	T(StringLiteral, nullptr, 0)                                       \
 	T(HexStringLiteral, nullptr, 0)                                    \
 	T(CommentLiteral, nullptr, 0)                                      \

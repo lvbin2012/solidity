@@ -31,6 +31,8 @@ set(sources
 	Visitor.h
 	Whiskers.cpp
 	Whiskers.h
+	Base58.cpp
+	Base58.h
 )
 
 add_library(devcore ${sources})

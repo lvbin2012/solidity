@@ -30,6 +30,7 @@
 #include <libdevcore/CommonIO.h>
 #include <libdevcore/Keccak256.h>
 #include <libdevcore/UTF8.h>
+#include <libdevcore/Base58.h>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -435,8 +436,13 @@ string AddressType::canonicalName() const
 u256 AddressType::literalValue(Literal const* _literal) const
 {
 	solAssert(_literal, "");
-	solAssert(_literal->value().substr(0, 2) == "0x", "");
-	return u256(_literal->valueWithoutUnderscores());
+    std::vector<uint8_t> vchRet(21);
+    bool check = dev::decodeBase58Check(_literal->value(), vchRet);
+    solAssert(check, "");
+    std::vector<uint8_t> address(20);
+    copy(vchRet.begin() + 1, vchRet.end(), address.begin());
+    std::string hexStr = dev::toHex(address, HexPrefix::Add);
+    return u256(hexStr);
 }
 
 TypeResult AddressType::unaryOperatorResult(Token _operator) const
